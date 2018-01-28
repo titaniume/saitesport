@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+<!-- sqlSessionFactory 工厂   mybatis-3.2.7   mybaits-spring-1.2.2.jar-->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 配置Mybatis核心配置文件所在位置 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描的包 -->
+		<property name="basePackage" value="cn.jack.core.dao"/>
+	</bean>
+	
+	
+</beans>

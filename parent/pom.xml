@@ -311,12 +311,12 @@
 			</dependency>
 			<!-- Active MQ 结束 -->
 			<!-- Tomcat8 servlet-api -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.apache.tomcat</groupId>
 				<artifactId>tomcat-jsp-api</artifactId>
 				<version>8.0.48</version>
 				<scope>provided</scope>
-			</dependency>
+			</dependency> -->
 		</dependencies>
 	</dependencyManagement>
 	
