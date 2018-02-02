@@ -1,37 +1,87 @@
 package cn.jack.core.controller;
 
-import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.jack.core.bean.TestTb;
-import cn.jack.core.service.TestTbService;
+
+
 
 @Controller
+@RequestMapping("/control")
 public class CenterController {
 	
-	
-	@Autowired
-	private TestTbService testTbServices;
 	/**
-	 * 
+	 * 入口
 	 * @param model
-	 * @return 
-	 * ModelAndView :跳转视图 + 数据 不用
-	 * void : 异步ajax
-	 * String  :跳转视图 + model
+	 * @return
 	 */
-	@RequestMapping(value="/test/index.do")
+	@RequestMapping(value="/index.do")
 	public String index(Model model){
-		System.out.println("centerController");
-//		model.addAttribute("msg", "控制器");
-		TestTb testTb = new TestTb();
-		testTb.setName("测试111");
-		testTb.setBirthday(new Date());
-		testTbServices.insertTestTb(testTb);
 		return "index";
 	}
+	/**
+	 * 头部
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/top.do")
+	public String top(Model model){
+		return "top";
+	}
+	
+	/**
+	 * 身体
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/main.do")
+	public String ccc(Model model){
+		return "main";
+	}
+	
+	/**
+	 * 身体---左边
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/left.do")
+	public String left(Model model){
+		return "left";
+	}
+	
+	/**
+	 * 身体---右边
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/right.do")
+	public String right(Model model){
+		return "right";
+	}
+	
+	
+	//商品身体-
+	@RequestMapping(value = "/frame/product_main.do")
+	public String product_main(Model model){
+		
+		return "frame/product_main";
+	}
+	
+	@RequestMapping(value = "/frame/product_left.do")
+	public String product_left(Model model){
+		
+		return "frame/product_left";
+	}
+	
+
+	
+
+	
+	
+
+
 }

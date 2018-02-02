@@ -13,9 +13,14 @@
 	<!-- 1:名称 计算机区别 唯一 -->
 	<dubbo:application name="saitesport-service-product"/>
 	<!-- 2:注册中心 地址 zookeeper在哪里 redis -->
-	<dubbo:registry address="192.168.200.128:2181" protocol="zookeeper"/>
+	<!-- <dubbo:registry address="192.168.200.128:2181" protocol="zookeeper"/>  -->
+	<!-- 不注册 -->
+	<!-- <dubbo:registry address="192.168.200.128:2181" />  -->
+	<dubbo:registry address="N/A" /> 
 	<!-- 3:dubbo://192.168.39.80:20800 默认 设置提供服务的端口 -->
 	<dubbo:protocol port="20880" name="dubbo"/>
 	<!-- 4:暴露实现类 -->
-	<dubbo:service interface="cn.jack.core.service.TestTbService" ref="testTbService"/>
+	 <dubbo:service interface="cn.jack.core.service.TestTbService" ref="testTbService"/>
+	<dubbo:service interface="cn.jack.core.service.product.BrandService" ref="brandService"/>
+	<dubbo:service interface="cn.jack.core.service.product.UploadService" ref="uploadService"/>
 </beans>

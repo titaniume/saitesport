@@ -5,6 +5,19 @@
 	id="WebApp_ID" version="3.0" >
 	
 	
+	<!-- POST 过滤器 -->
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
 	<!-- 前端控制器  -->
 	<servlet>
 		<servlet-name>console</servlet-name>
@@ -24,7 +37,7 @@
 	 -->
 	<servlet-mapping>
 		<servlet-name>console</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
 	</web-app>

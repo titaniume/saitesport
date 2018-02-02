@@ -13,6 +13,8 @@
 	<!-- 处理器映射器 适配器  用注解驱动代替-->
 	<mvc:annotation-driven/>
 	
+
+	
 	<!-- 视图解析器 -->
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 前缀  -->
@@ -20,6 +22,11 @@
 		<!-- 后缀 -->
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	
+	
+	<!-- 图片上传  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+		
 	
 	<import resource="dubbo-consumer.xml"/>
 </beans>
