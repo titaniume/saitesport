@@ -44,4 +44,10 @@ public class BrandController {
 		model.addAttribute("brand", brand);
 		return "brand/edit";
 	}
+	
+	@RequestMapping(value="/brand/edit.do")
+	public String toEdit(Brand brand){ 
+		brandService.updateBrandById(brand);
+		return "redirect:/brand/list.do";
+	}
 }
