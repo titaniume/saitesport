@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="cn.jack.core.dao.product.BrandDao">
-	
+
+
 	<resultMap type="Brand" id="brand">
-		<!-- 把字段名称不一致的写在这里就可以了，没有必要都写出来  column:数据库字段  property:javaBean字段-->
 		<result column="img_url" property="imgUrl"/>
 		<result column="is_display" property="isDisplay"/>
 	</resultMap>
-	
-	<!-- 查询  resultMap数据库表字段的名称和javaBean不同 -->
+	<!-- 查询 -->
 	<select id="selectBrandListByQuery" parameterType="BrandQuery" resultMap="brand">
 		select id , name ,description,img_url,sort,is_display
 		from sts_brand
@@ -25,8 +25,7 @@
 			limit #{startRow},#{pageSize}
 		</if>
 	</select>
-	
-	<!-- 查询总条数 -->
+	<!-- 查询总条数-->
 	<select id="selectCount" parameterType="BrandQuery" resultType="Integer">
 		select count(1)
 		from sts_brand
@@ -39,17 +38,15 @@
 			</if>
 		</where>
 	</select>
-	
-	<!--通过Id查询  -->
+	<!-- 通过ID查询 -->
 	<select id="selectBrandById" parameterType="Long" resultMap="brand">
 		select id , name ,description,img_url,sort,is_display
 		from sts_brand
 		<where>
-			id=#{id}
+			id = #{id}
 		</where>
 	</select>
-	
-	<!-- 修改 set 标签可以去除最后一个逗号 -->
+	<!-- 修改 -->
 	<update id="updateBrandById" parameterType="Brand">
 		update sts_brand
 		<set>
@@ -73,4 +70,16 @@
 			id = #{id}
 		</where>
 	</update>
+	
+	<!-- 删除 (1,2,3,4) -->
+	<delete id="deletes" parameterType="Long">
+		delete from sts_brand
+		<where>
+			id in 
+			<foreach collection="array" item="id" separator="," open="(" close=")">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+	
 </mapper>

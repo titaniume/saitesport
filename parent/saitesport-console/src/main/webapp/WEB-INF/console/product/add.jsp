@@ -133,9 +133,9 @@ function uploadPic(){
 						商品品牌:</td><td width="80%" class="pn-fcontent">
 						<select name="brandId">
 							<option value="">请选择品牌</option>
-							<option value="1">依琦莲</option>
-							<option value="2">凯速（KANSOON）</option>
-							<option value="3">梵歌纳（vangona）</option>
+								<c:forEach items="${brands}" var="brand">
+									<option value="${brand.id}">${brand.name}</option>
+								</c:forEach>
 						</select>
 					</td>
 				</tr>
@@ -150,23 +150,16 @@ function uploadPic(){
 						<span class="pn-frequired">*</span>
 						颜色:</td><td width="80%" class="pn-fcontent">
 							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							<input type="checkbox" value="9" name="colors"/>西瓜红
+							
 					</td>
 				</tr>
 				<tr>
 					<td width="20%" class="pn-flabel pn-flabel-h">
 						<span class="pn-frequired">*</span>
 						尺码:</td><td width="80%" class="pn-fcontent">
-						<input type="checkbox" name="sizes" value="S"/>S
-						<input type="checkbox" name="sizes" value="M"/>M
-						<input type="checkbox" name="sizes" value="L"/>L
-						<input type="checkbox" name="sizes" value="XL"/>XL
-						<input type="checkbox" name="sizes" value="XXL"/>XXL
+						<c:forEach items="${colors}" var="color">
+								<input type="checkbox"  value="${color.id}"/>${color.name}
+						</c:forEach>
 					</td>
 				</tr>
 				<tr>

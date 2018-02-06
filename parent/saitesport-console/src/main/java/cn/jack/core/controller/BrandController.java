@@ -38,6 +38,12 @@ public class BrandController {
 		return "brand/list";
 	}
 	
+	/**
+	 * 去修改页面
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/brand/toEdit.do")
 	public String toEdit(Long id,Model model){
 		Brand brand = brandService.selectBrandById(id); //快速返回:shift+alt+l
@@ -45,9 +51,25 @@ public class BrandController {
 		return "brand/edit";
 	}
 	
+	/**
+	 * 修改
+	 * @param brand
+	 * @return
+	 */
 	@RequestMapping(value="/brand/edit.do")
 	public String toEdit(Brand brand){ 
 		brandService.updateBrandById(brand);
 		return "redirect:/brand/list.do";
+	}
+	
+	/**
+	 * 删除
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping(value="/brand/deletes.do")
+	public String toEdit(Long [] ids){ 
+		brandService.deletes(ids);
+		return "forward:/brand/list.do";
 	}
 }

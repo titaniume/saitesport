@@ -1,5 +1,7 @@
 package cn.jack.core.service.product;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +75,21 @@ public class BrandServiceImpl implements BrandService {
 	public void updateBrandById(Brand brand) {
 		brandDao.updateBrandById(brand);
 		
+	}
+
+
+	@Override
+	public void deletes(Long[] ids) {
+		brandDao.deletes(ids);
+		
+	}
+
+
+	@Override
+	public List<Brand> selectBrandListByQuery(Integer isDisplay) {
+		BrandQuery brandQuery = new BrandQuery();
+		brandQuery.setIsDisplay(isDisplay);
+		return brandDao.selectBrandListByQuery(brandQuery);
 	}
 	
 }
