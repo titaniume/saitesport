@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+	<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ include file="../head.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -84,7 +84,7 @@ function uploadPic(){
 				
 			}
 	}
-	$("#jvForm").ajaxSubmit(options);
+	$("#jvForm").ajaxSubmit(options);//jquery.form.js 比较新版本 form  
 }
 </script>
 </head>
@@ -96,7 +96,8 @@ function uploadPic(){
 	</form>
 	<div class="clear"></div>
 </div>
-<h2 class="h2_ch"><span id="tabs">
+<h2 class="h2_ch">
+<span id="tabs">
 <a href="javascript:void(0);" ref="#tab_1" title="基本信息" class="here">基本信息</a>
 <a href="javascript:void(0);" ref="#tab_2" title="商品图片" class="nor">商品图片</a>
 <a href="javascript:void(0);" ref="#tab_3" title="商品描述" class="nor">商品描述</a>
@@ -133,9 +134,9 @@ function uploadPic(){
 						商品品牌:</td><td width="80%" class="pn-fcontent">
 						<select name="brandId">
 							<option value="">请选择品牌</option>
-								<c:forEach items="${brands}" var="brand">
-									<option value="${brand.id}">${brand.name}</option>
-								</c:forEach>
+							<c:forEach items="${brands }" var="brand">
+								<option value="${brand.id }">${brand.name }</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>
@@ -149,17 +150,20 @@ function uploadPic(){
 					<td width="20%" class="pn-flabel pn-flabel-h">
 						<span class="pn-frequired">*</span>
 						颜色:</td><td width="80%" class="pn-fcontent">
-							<input type="checkbox" value="9" name="colors"/>西瓜红
-							
+							<c:forEach items="${colors}" var="color">
+							<input type="checkbox" value="${color.id}" name="colors"/>${color.name}
+							</c:forEach>
 					</td>
 				</tr>
 				<tr>
 					<td width="20%" class="pn-flabel pn-flabel-h">
 						<span class="pn-frequired">*</span>
 						尺码:</td><td width="80%" class="pn-fcontent">
-						<c:forEach items="${colors}" var="color">
-								<input type="checkbox"  value="${color.id}"/>${color.name}
-						</c:forEach>
+						<input type="checkbox" name="sizes" value="S"/>S
+						<input type="checkbox" name="sizes" value="M"/>M
+						<input type="checkbox" name="sizes" value="L"/>L
+						<input type="checkbox" name="sizes" value="XL"/>XL
+						<input type="checkbox" name="sizes" value="XXL"/>XXL
 					</td>
 				</tr>
 				<tr>

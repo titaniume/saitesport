@@ -1,5 +1,6 @@
 package cn.jack.core.service.product;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.jack.common.page.Pagination;
 import cn.jack.core.bean.product.Color;
 import cn.jack.core.bean.product.ColorQuery;
+import cn.jack.core.bean.product.Product;
 import cn.jack.core.bean.product.ProductQuery;
 import cn.jack.core.bean.product.ProductQuery.Criteria;
+import cn.jack.core.bean.product.Sku;
 import cn.jack.core.dao.product.ColorDao;
 import cn.jack.core.dao.product.ProductDao;
+import cn.jack.core.dao.product.SkuDao;
 
 /**
  * 商品
@@ -25,10 +29,11 @@ public class ProductServiceImpl  implements ProductService{
 	
 	
 	@Autowired
-	private ProductDao productDao;
-	
+	private ProductDao productDao;	
 	@Autowired
 	private ColorDao colorDao;
+	@Autowired
+	private SkuDao skuDao;
 	
 	//分页对象
 	public Pagination selectPaginationByQuery(Integer pageNo,String name,Long brandId,Boolean isShow){
@@ -78,6 +83,54 @@ public class ProductServiceImpl  implements ProductService{
 		return colorDao.selectByExample(colorQuery);
 	}
 	
+	/**
+	 * 添加商品
+	 * @param product
+	 */
+	public void  insertProduct(Product product){
+		
+			//下架状态 后台程序写的
+			product.setIsShow(false);
+			//删除  后台程序写的不删除
+			product.setIsDel(true);
+			productDao.insertSelective(product);
+			//返回ID
+			//保存SKU
+			String[] colors = product.getColors().split(",");
+			String[] sizes = product.getSizes().split(",");
+			//颜色
+			for (String color : colors) {
+				for (String size : sizes) {
+					//保存SKU
+					Sku sku = new Sku();
+					sku.setId(null);
+					//商品ＩＤ
+					sku.setProductId(product.getId());
+					//颜色
+					sku.setColorId(Long.parseLong(color));
+					//尺码
+					sku.setSize(size);
+					//市场价
+					sku.setMarketPrice(999f);
+					//售价
+					sku.setPrice(666f);
+					//运费
+					sku.setDeliveFee(8f);
+					//库存
+					sku.setStock(0);
+					//限制
+					sku.setUpperLimit(200);
+					//时间
+					sku.setCreateTime(new Date());
+					
+					skuDao.insertSelective(sku);
+					
+					}
+				}
+		}
+	}
 	
 	
-}
+	
+	
+

@@ -123,7 +123,7 @@
       #{deliveFee,jdbcType=REAL}, #{stock,jdbcType=INTEGER}, #{upperLimit,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.jack.core.bean.product.Sku" >
+   <insert id="insertSelective" parameterType="cn.jack.core.bean.product.Sku" >
     insert into sts_sku
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

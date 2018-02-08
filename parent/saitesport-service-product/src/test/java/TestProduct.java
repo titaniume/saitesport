@@ -12,8 +12,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.jack.core.bean.TestTb;
 import cn.jack.core.bean.product.Product;
 import cn.jack.core.bean.product.ProductQuery;
+import cn.jack.core.bean.product.Sku;
 import cn.jack.core.dao.TestTbDao;
 import cn.jack.core.dao.product.ProductDao;
+import cn.jack.core.dao.product.SkuDao;
 import cn.jack.core.service.TestTbService;
 
 
@@ -56,5 +58,35 @@ public class TestProduct {
 		int count = productDao.countByExample(productQuery);
 		System.out.println(count);
 		
+	}
+	
+	@Autowired
+	private SkuDao skuDao;
+	
+	@Test
+	public void test1(){
+		//保存SKU
+		Sku sku = new Sku();
+		//商品ＩＤ
+		sku.setProductId(1l);
+		//颜色
+		sku.setColorId(1l);
+		//尺码
+		sku.setSize("L");
+		//市场价
+		sku.setMarketPrice(999f);
+		//售价
+		sku.setPrice(666f);
+		//运费
+		sku.setDeliveFee(8f);
+		//库存
+		sku.setStock(0);
+		//限制
+		sku.setUpperLimit(200);
+		//时间
+		sku.setCreateTime(new Date());
+		
+		int i = skuDao.insert(sku);
+		System.out.println(i+"aa");
 	}
 }

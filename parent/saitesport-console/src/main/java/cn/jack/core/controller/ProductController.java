@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.jack.common.page.Pagination;
 import cn.jack.core.bean.product.Brand;
 import cn.jack.core.bean.product.Color;
+import cn.jack.core.bean.product.Product;
 import cn.jack.core.service.product.BrandService;
 import cn.jack.core.service.product.ProductService;
 
@@ -61,4 +62,11 @@ public class ProductController {
 		model.addAttribute("colors", colors);
 		return "product/add";
 	}
+	
+	@RequestMapping(value ="/product/add.do")
+	public String add(Product product){
+		productService.insertProduct(product);
+		return "redirect:/product/list.do";
+	}
 }
+	
