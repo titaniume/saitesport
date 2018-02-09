@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.jack.common.page.Pagination;
 import cn.jack.core.bean.TestTb;
 import cn.jack.core.bean.product.Product;
 import cn.jack.core.bean.product.ProductQuery;
@@ -17,6 +18,7 @@ import cn.jack.core.dao.TestTbDao;
 import cn.jack.core.dao.product.ProductDao;
 import cn.jack.core.dao.product.SkuDao;
 import cn.jack.core.service.TestTbService;
+import cn.jack.core.service.product.ProductService;
 
 
 /**
@@ -30,7 +32,9 @@ public class TestProduct {
 
 	@Autowired 
 	private ProductDao productDao;
-
+	
+	@Autowired
+	private ProductService productService;
 	
 	@Test
 	public void testAdd() throws Exception {
@@ -86,7 +90,17 @@ public class TestProduct {
 		//时间
 		sku.setCreateTime(new Date());
 		
-		int i = skuDao.insert(sku);
+		int i = skuDao.insertSelective(sku);
 		System.out.println(i+"aa");
 	}
-}
+	
+	@Test
+	public void aaa(){
+		Pagination pagination = productService.selectPaginationByQuery(1, null, 5l,true);
+		List<Product> list =(List<Product>) pagination.getList();
+		for (Product product : list) {
+			System.out.println(product.getImgUrl().split(",")[0]);
+		}
+		}
+	}
+

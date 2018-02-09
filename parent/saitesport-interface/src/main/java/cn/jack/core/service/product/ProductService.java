@@ -19,5 +19,8 @@ public interface ProductService {
 	
 	//添加商品
 	public void  insertProduct(Product product);
+	
+	//上架 
+	public void isShow(Long[] ids);
 
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	
+	 <!-- Redis 配置 -->
+	 <bean id="jedis" class="redis.clients.jedis.Jedis">
+	 		<constructor-arg value="192.168.200.128" index="0" type="java.lang.String"/>
+	 		<constructor-arg value="6379" index="1"/>
+	 </bean>
+</beans>

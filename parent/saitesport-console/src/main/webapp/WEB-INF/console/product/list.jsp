@@ -14,12 +14,12 @@ function isShow(){
 		alert("请至少选择一个");
 		return;
 	}
-	//你确定删除吗
+	//你确定上架吗
 	if(!confirm("你确定上架吗")){
 		return;
 	}
 	//提交 Form表单
-	$("#jvForm").attr("action","/brand/isShow.do");
+	$("#jvForm").attr("action","/product/isShow.do");
 	$("#jvForm").attr("method","post");
 	$("#jvForm").submit();
 	
@@ -36,15 +36,15 @@ function isShow(){
 </div>
 <div class="body-box">
 <form action="/product/list.do" method="post" style="padding-top:5px;">
-名称: <input type="text" name="name" value="${name}"/>
-	<select name="brandId">
-		<option value="">请选择品牌</option> 
+名称: <input type="text" name="name" value="${name }"/>
+	<select name="brandId"> 
+		<option value="">请选择品牌</option>
 		<c:forEach items="${brands}" var="brand">
-			<option value="${brand.id}" <c:if test="${brandId == brand.id}">selected="selected"</c:if> >${brand.name}</option>
+			<option value="${brand.id }" <c:if test="${brandId == brand.id }">selected="selected"</c:if>>${brand.name }</option>
 		</c:forEach>
 	</select>
 	<select name="isShow">
-		<option value="1" <c:if test="${isShow}">selected="selected"</c:if> >上架</option>
+		<option value="1" <c:if test="${isShow}">selected="selected"</c:if>>上架</option>
 		<option value="0" <c:if test="${!isShow}">selected="selected"</c:if>>下架</option>
 	</select>
 	<input type="submit" class="query" value="查询"/>
@@ -54,8 +54,8 @@ function isShow(){
 	<thead class="pn-lthead">
 		<tr>
 			<th width="20"><input type="checkbox" onclick="Pn.checkbox('ids',this.checked)"/></th>
-			<th width="60" align="center">商品编号</th>
-			<th>商品名称</th> 
+			<th width="60">商品编号</th>
+			<th>商品名称</th>
 			<th>图片</th>
 			<th width="4%">新品</th>
 			<th width="4%">热卖</th>
@@ -65,12 +65,12 @@ function isShow(){
 		</tr>
 	</thead>
 	<tbody class="pn-ltbody">
-	<c:forEach items="${pagination.list}" var="product">
+	<c:forEach items="${pagination.list }" var="product">
 		<tr bgcolor="#ffffff" onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-			<td><input type="checkbox" name="ids" value="${product.id}" /></td>
-			<td  align="center">${product.id}</td>
-			<td align="center">${product.name}</td>
-			<td align="center"><img width="50" height="50" src="/images/pic/ppp.jpg"/></td>
+			<td><input type="checkbox" name="ids" value="${product.id }"/></td>
+			<td>${product.id }</td>
+			<td align="center">${product.name }</td>
+			<td align="center"><img width="50" height="50" src="${product.images[0]}"/></td>
 			<td align="center">是</td>
 			<td align="center">是</td>
 			<td align="center">是</td>
@@ -79,17 +79,18 @@ function isShow(){
 				<c:if test="${!isShow}">下架</c:if>
 			</td>
 			<td align="center">
-			<a href="#" class="pn-opt">查看</a> | <a href="#" class="pn-opt">修改</a> | <a href="#" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a> | <a href="../sku/list.jsp" class="pn-opt">库存</a>
+			<a href="#" class="pn-opt">查看</a> | <a href="#" class="pn-opt">修改</a> | <a href="#" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a> | <a href="/sku/list.do?productId=${product.id}" class="pn-opt">库存</a>
 			</td>
 		</tr>
 	</c:forEach>
+		
 	</tbody>
 </table>
 <div class="page pb15">
 	<span class="r inb_a page_b">
-		<c:forEach items="${pagination.pageView}" var="page">
-			${page}
-		</c:forEach>
+	<c:forEach items="${pagination.pageView }" var="page">
+		${page }
+	</c:forEach>
 	</span>
 </div>
 <div style="margin-top:15px;"><input class="del-button" type="button" value="删除" onclick="optDelete();"/><input class="add" type="button" value="上架" onclick="isShow();"/><input class="del-button" type="button" value="下架" onclick="isHide();"/></div>

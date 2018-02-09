@@ -17,9 +17,10 @@
 	<dubbo:registry address="N/A" check="false"/> 
 	<!-- 3:调用此接口对应的实现类 -->
  	<dubbo:reference interface="cn.jack.core.service.TestTbService" id="testTbServices" url="dubbo://127.0.0.1:20880" />
-	<dubbo:reference interface="cn.jack.core.service.product.BrandService" id="brandService" url="dubbo://127.0.0.1:20880" />
-	<dubbo:reference interface="cn.jack.core.service.product.UploadService" id="UploadService" url="dubbo://127.0.0.1:20880" />
+	<dubbo:reference interface="cn.jack.core.service.product.BrandService"   id="brandService" url="dubbo://127.0.0.1:20880" />
+	<dubbo:reference interface="cn.jack.core.service.product.UploadService"  id="UploadService" url="dubbo://127.0.0.1:20880" />
 	<dubbo:reference interface="cn.jack.core.service.product.ProductService" id="productService" url="dubbo://127.0.0.1:20880" />
+		<dubbo:reference interface="cn.jack.core.service.product.SkuService" id="skuService" url="dubbo://127.0.0.1:20880" />
 	<!-- 全局设置 -->
 	<dubbo:consumer timeout="600000" check="false"/>
 </beans>

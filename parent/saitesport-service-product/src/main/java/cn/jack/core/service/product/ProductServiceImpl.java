@@ -17,6 +17,7 @@ import cn.jack.core.bean.product.Sku;
 import cn.jack.core.dao.product.ColorDao;
 import cn.jack.core.dao.product.ProductDao;
 import cn.jack.core.dao.product.SkuDao;
+import redis.clients.jedis.Jedis;
 
 /**
  * 商品
@@ -34,6 +35,9 @@ public class ProductServiceImpl  implements ProductService{
 	private ColorDao colorDao;
 	@Autowired
 	private SkuDao skuDao;
+	@Autowired
+	private Jedis jedis;
+	
 	
 	//分页对象
 	public Pagination selectPaginationByQuery(Integer pageNo,String name,Long brandId,Boolean isShow){
@@ -88,6 +92,9 @@ public class ProductServiceImpl  implements ProductService{
 	 * @param product
 	 */
 	public void  insertProduct(Product product){
+			//唯一Id
+			Long id = jedis.incr("pno");
+			product.setId(id);
 		
 			//下架状态 后台程序写的
 			product.setIsShow(false);
@@ -103,7 +110,7 @@ public class ProductServiceImpl  implements ProductService{
 				for (String size : sizes) {
 					//保存SKU
 					Sku sku = new Sku();
-					sku.setId(null);
+					//sku.setId(null);
 					//商品ＩＤ
 					sku.setProductId(product.getId());
 					//颜色
@@ -120,17 +127,30 @@ public class ProductServiceImpl  implements ProductService{
 					sku.setStock(0);
 					//限制
 					sku.setUpperLimit(200);
-					//时间
-					sku.setCreateTime(new Date());
-					
-					skuDao.insertSelective(sku);
-					
-					}
-				}
+				// 时间
+				sku.setCreateTime(new Date());
+
+				skuDao.insertSelective(sku);
+
+			}
 		}
 	}
 	
-	
-	
+	// 上架
+	public void isShow(Long[] ids) {
+		Product product = new Product();
+		// 上架
+		product.setIsShow(true);
+		for (Long id : ids) {
+			product.setId(id);
+			// 商品状态的变更
+			productDao.updateByPrimaryKeySelective(product);
+
+			// TODO 保存商品信息到SOlr服务器
+
+			// TODO 静态化
+		}
+	}
+}
 	
 
