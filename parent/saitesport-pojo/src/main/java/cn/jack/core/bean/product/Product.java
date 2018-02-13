@@ -84,8 +84,20 @@ public class Product implements Serializable {
     public String[] getImages(){
     	return imgUrl.split(",");
     }
+    
+    //附加字段
+    private Float price; //最低价
+    
 
-    private static final long serialVersionUID = 1L;
+    public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
