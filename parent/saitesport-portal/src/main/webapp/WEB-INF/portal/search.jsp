@@ -11,6 +11,38 @@
 <link type="text/css" rel="stylesheet" href="/css/search.css">
 <script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
 
+<script type="text/javascript">
+//全局变量
+var keyword = '${param.keyword}';
+var brandId = '${brandId}';
+var price = '${price}';
+//过滤条件
+//品牌过滤  id == 品牌ID
+function fqBrand(id){
+	if(price != ''){
+		//刷新
+		window.location.href = "/search?keyword=" + keyword + "&brandId=" + id + "&price=" + price;
+	}else{
+		//刷新
+		window.location.href = "/search?keyword=" + keyword + "&brandId=" + id;
+	}
+}
+//过滤价格  id == 价格区间
+function fqPrice(id){
+	if(brandId != ''){
+		//刷新
+		window.location.href = "/search?keyword=" + keyword + "&price=" + id + "&brandId=" + brandId;
+	}else{
+		//刷新
+		window.location.href = "/search?keyword=" + keyword + "&price=" + id;
+	}
+}
+
+function closes(){
+	window.location.href = "/search?keyword=" + keyword;
+}
+</script>
+
 </head>
 <body>
 <!-- header start -->
@@ -46,7 +78,7 @@
 			<div class="sl-b-selected J_brandSelected">
 				<span class="crumbs-arrow">已选条件：</span>
 					<c:forEach items="${map }" var="m">
-						<a title="依琦莲（yiqilian）"  href="javascript:;" class="crumb-select-item">
+						<a title="依琦莲（yiqilian）"  onclick="closes()"   href="javascript:;" class="crumb-select-item">
 							<b>${m.key }：</b><em>${m.value }</em><i></i>
 						</a>
 					</c:forEach>
@@ -61,7 +93,7 @@
 <c:if test="${empty brandId }">
 <div class="J_selectorLine s-brand">
 	<div class="sl-wrap">
-		<div class="sl-key"><strong>品牌：</strong></div>
+		<div class="sl-key"><strong>品牌：</strong></div >
 		<div class="sl-value">
 			<div class="sl-v-list">
 				<ul class="J_valueList v-fixed">

@@ -1,6 +1,10 @@
 package cn.jack.core.service.product;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +14,7 @@ import cn.jack.common.page.Pagination;
 import cn.jack.core.bean.product.Brand;
 import cn.jack.core.bean.product.BrandQuery;
 import cn.jack.core.dao.product.BrandDao;
+import redis.clients.jedis.Jedis;
 
 
 
@@ -24,6 +29,8 @@ public class BrandServiceImpl implements BrandService {
 	
 	@Autowired
 	private BrandDao brandDao;
+	@Autowired
+	private Jedis jedis;
 	
 	
 	//查询分页对象
@@ -70,11 +77,34 @@ public class BrandServiceImpl implements BrandService {
 		return brandDao.selectBrandById(id);
 	}
 
-
+	
+	/**
+	 * 修改
+	 */
 	@Override
 	public void updateBrandById(Brand brand) {
+		//修改Redis
+		jedis.hset("brand", String.valueOf(brand.getId()),brand.getName());
 		brandDao.updateBrandById(brand);
 		
+	}
+	
+	/**
+	 * 查询从redis中
+	 * @return
+	 */
+	public List<Brand> selectBrandListFromRedi(){
+		List<Brand> brands = new ArrayList<Brand>();
+		//从Reeis中查询
+		Map<String, String> hgetAll = jedis.hgetAll("brand");
+		Set<Entry<String, String>> entrySet = hgetAll.entrySet();
+		for (Entry<String, String> entry : entrySet) {
+			Brand brand = new Brand();
+			brand.setId(Long.parseLong(entry.getKey()));
+			brand.setName(entry.getValue());
+			brands.add(brand);
+		}
+		return brands;
 	}
 
 

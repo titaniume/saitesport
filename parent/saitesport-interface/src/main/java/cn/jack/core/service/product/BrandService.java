@@ -23,5 +23,8 @@ public interface BrandService {
     
     //删除
   	public void deletes(Long [] ids);
+  	
+  	//从redis取值
+  	public List<Brand> selectBrandListFromRedi();
 
 }

@@ -1,5 +1,6 @@
 package cn.jack.core.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,17 +12,19 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.params.SolrParams;
-import org.apache.taglibs.standard.tei.ForEachTEI;
+import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.jack.common.page.Paginable;
+
 import cn.jack.common.page.Pagination;
 import cn.jack.core.bean.product.Product;
 import cn.jack.core.bean.product.ProductQuery;
 import cn.jack.core.bean.product.Sku;
 import cn.jack.core.bean.product.SkuQuery;
+import cn.jack.core.dao.product.ProductDao;
+import cn.jack.core.dao.product.SkuDao;
+
 
 
 
@@ -36,8 +39,14 @@ public class SearchServiceImpl implements SearchService{
 	@Autowired
 	private SolrServer solrServer;
 	
+	@Autowired
+	private ProductDao productDao;
+	
+	@Autowired
+	private SkuDao skuDao;
+	
 	//全文检索
-	public Pagination selectPaginationByQuery(Integer pageNo,String keyword) throws Exception{
+	public Pagination selectPaginationByQuery(Integer pageNo,String keyword,Long brandId,String price) throws Exception{
 		//创建包装泪
 		ProductQuery productQuery = new ProductQuery();
 		//当前页
@@ -55,6 +64,21 @@ public class SearchServiceImpl implements SearchService{
 		solrQuery.set("q", "name_ik:" + keyword);
 		params.append("keyword=").append(keyword);
 		//过滤条件
+		//品牌
+		if(null != brandId){
+			solrQuery.setFilterQueries("brandId:" + brandId);
+		}
+		//价格 0-99 1600
+		if(null != price){
+			String[] p = price.split("-");
+			if(p.length == 2){
+				solrQuery.setFilterQueries("price:[" + p[0] + " TO " + p[1] + "]" + price);
+			}else{
+				solrQuery.setFilterQueries("price:[" + p[0] + " TO *]");
+			}
+		
+		}
+		
 		//高亮
 		solrQuery.setHighlight(true);
 		solrQuery.addHighlightField("name_ik");
@@ -96,11 +120,9 @@ public class SearchServiceImpl implements SearchService{
 			String url =(String) doc.get("url");	
 			product.setImgUrl(url); 
 			//价格 售价 select price FROM sts_sku WHERE product_id =1005 ORDER BY price asc LIMIT 1
-			Float price =(Float) doc.get("price");
-			product.setPrice(price);
+			product.setPrice((Float) doc.get("price"));
 			//品牌Id
-			Integer brandId =(Integer) doc.get("brandId");
-			product.setBrandId(Long.parseLong(String.valueOf(brandId)));
+			product.setBrandId(Long.parseLong(String.valueOf((Integer) doc.get("brandId"))));
 			products.add(product);
 		}
 		//构建分页对象
@@ -109,5 +131,44 @@ public class SearchServiceImpl implements SearchService{
 		String url="/search";
 		pagination.pageView(url, params.toString());
 		return pagination;
+	}
+	
+	/**
+	 * 保存商品到solr
+	 */
+	public void insertProductToSolr(Long id) {
+		// TODO 保存商品信息到SOlr服务器
+		SolrInputDocument doc = new SolrInputDocument();
+		// 商品Id
+		doc.setField("id", id);
+		// 商品名称 ik
+		Product p = productDao.selectByPrimaryKey(id);
+		doc.setField("name_ik", p.getName());
+		// 图片
+		doc.setField("url", p.getImages()[0]);
+		// 价格 售价 select price FROM sts_sku WHERE product_id =1005 ORDER BY price
+		// asc LIMIT 1
+		SkuQuery skuQuery = new SkuQuery();
+		skuQuery.createCriteria().andProductIdEqualTo(id);
+		skuQuery.setOrderByClause("price asc");
+		skuQuery.setPageNo(1);
+		skuQuery.setPageSize(1);
+		skuQuery.setFields("price");
+		List<Sku> skus = skuDao.selectByExample(skuQuery);
+		doc.setField("price", skus.get(0).getPrice());
+		// 品牌Id
+		doc.setField("brandId", p.getBrandId());
+		// 时间 可选
+		try {
+			solrServer.add(doc);
+			solrServer.commit();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
